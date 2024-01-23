@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WeaponType;
+use App\Models\WeaponModel;
 use Illuminate\Http\Request;
 
-class WeaponTypeController extends Controller
+class WeaponModelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class WeaponTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(WeaponType $weaponType)
+    public function show(WeaponModel $weaponModel)
     {
         //
     }
@@ -42,7 +42,7 @@ class WeaponTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(WeaponType $weaponType)
+    public function edit(WeaponModel $weaponModel)
     {
         //
     }
@@ -50,7 +50,7 @@ class WeaponTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WeaponType $weaponType)
+    public function update(Request $request, WeaponModel $weaponModel)
     {
         //
     }
@@ -58,7 +58,7 @@ class WeaponTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WeaponType $weaponType)
+    public function destroy(WeaponModel $weaponModel)
     {
         //
     }
