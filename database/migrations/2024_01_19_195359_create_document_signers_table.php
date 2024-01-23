@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('document_signers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->enum('status', ['pending', 'signed', 'unsolicited']);
+            $table->string('token');
+            $table->string('slug');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

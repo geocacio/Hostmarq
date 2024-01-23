@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('user_access_levels', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('access_level_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('access_level_id')->references('id')->on('access_levels');
         });
     }
 
