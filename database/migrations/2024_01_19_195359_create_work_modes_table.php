@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('work_modes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('slug');
             $table->timestamps();
         });
     }

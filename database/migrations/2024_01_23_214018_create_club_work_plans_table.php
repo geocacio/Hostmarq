@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('weapon_sigmas', function (Blueprint $table) {
+        Schema::create('club_work_plans', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('club_id');
+            $table->unsignedBigInteger('work_plan_id');
             $table->timestamps();
+
+            $table->foreign('club_id')->references('id')->on('clubs');
+            $table->foreign('work_plan_id')->references('id')->on('work_plans');
         });
     }
 
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('weapon_sigmas');
+        Schema::dropIfExists('club_work_plans');
     }
 };

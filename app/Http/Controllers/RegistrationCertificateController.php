@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WeaponSigma;
+use App\Models\RegistrationCertificate;
 use Illuminate\Http\Request;
 
-class WeaponSigmaController extends Controller
+class RegistrationCertificateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class WeaponSigmaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(WeaponSigma $weaponSigma)
+    public function show(RegistrationCertificate $registrationCertificate)
     {
         //
     }
@@ -42,7 +42,7 @@ class WeaponSigmaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(WeaponSigma $weaponSigma)
+    public function edit(RegistrationCertificate $registrationCertificate)
     {
         //
     }
@@ -50,7 +50,7 @@ class WeaponSigmaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WeaponSigma $weaponSigma)
+    public function update(Request $request, RegistrationCertificate $registrationCertificate)
     {
         //
     }
@@ -58,7 +58,7 @@ class WeaponSigmaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WeaponSigma $weaponSigma)
+    public function destroy(RegistrationCertificate $registrationCertificate)
     {
         //
     }

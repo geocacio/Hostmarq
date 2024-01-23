@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('habituality_configs', function (Blueprint $table) {
+        Schema::create('club_habituality_configs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->string('slug');
+            $table->unsignedBigInteger('club_id');
+            $table->unsignedBigInteger('habituality_config_id');
             $table->timestamps();
+
+            $table->foreign('club_id')->references('id')->on('clubs');
+            $table->foreign('habituality_config_id')->references('id')->on('habituality_configs');
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('habituality_configs');
+        Schema::dropIfExists('club_habituality_configs');
     }
 };
