@@ -26,10 +26,8 @@ return new class extends Migration
             $table->string('logo');
             $table->string('favicon');
             $table->string('logo_rodape');
-            $table->string('favicon');
             $table->string('country');
             $table->string('city');
-            $table->string('address');
             $table->string('slug');
             $table->timestamps();
 

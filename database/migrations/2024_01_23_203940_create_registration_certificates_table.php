@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('registration_certificates', function (Blueprint $table) {
             $table->id();
-            $table->morphs('registration_certificateable');
+            $table->unsignedBigInteger('reg_certifiable_id');
+            $table->string('reg_certifiable_type');
             $table->date('certificate');
             $table->date('emission');
             $table->date('expedition');
             $table->date('validity');
             $table->timestamps();
+
+            $table->index(['reg_certifiable_id', 'reg_certifiable_type'], 'reg_certifiable_index');
         });
     }
 

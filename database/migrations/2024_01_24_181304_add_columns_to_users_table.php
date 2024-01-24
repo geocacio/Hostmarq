@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('nationality', 50)->nullable();
             $table->string('birth_date', 50)->nullable();
             $table->string('profession', 100)->nullable();
-            $table->string('email', 100)->nullable();
             $table->string('instagram', 30)->nullable();
             $table->string('phone', 30)->nullable();
             $table->string('father', 100)->nullable();
