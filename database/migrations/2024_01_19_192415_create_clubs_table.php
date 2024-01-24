@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('clubs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('owner_id');
             $table->string('name');
             $table->string('acronym');
             $table->string('cnpj');
@@ -31,6 +32,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('slug');
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 

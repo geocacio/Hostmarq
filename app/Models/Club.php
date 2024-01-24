@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Club extends Model
 {
     use HasFactory;
+
+    public function ownedClubs()
+    {
+        return $this->hasMany(User::class, 'owner_id');
+    }
 }

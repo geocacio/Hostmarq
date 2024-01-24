@@ -53,4 +53,14 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne(Club::class, 'owner_id');
+    }
 }
