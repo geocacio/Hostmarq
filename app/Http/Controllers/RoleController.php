@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserAccessLevel;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class UserAccessLevelController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class UserAccessLevelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserAccessLevel $userAccessLevel)
+    public function show(Role $role)
     {
         //
     }
@@ -42,7 +42,7 @@ class UserAccessLevelController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UserAccessLevel $userAccessLevel)
+    public function edit(Role $role)
     {
         //
     }
@@ -50,7 +50,7 @@ class UserAccessLevelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UserAccessLevel $userAccessLevel)
+    public function update(Request $request, Role $role)
     {
         //
     }
@@ -58,7 +58,7 @@ class UserAccessLevelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserAccessLevel $userAccessLevel)
+    public function destroy(Role $role)
     {
         //
     }
