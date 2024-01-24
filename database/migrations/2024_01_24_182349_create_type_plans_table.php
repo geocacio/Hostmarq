@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registration_certificates', function (Blueprint $table) {
+        Schema::create('type_plans', function (Blueprint $table) {
             $table->id();
-            $table->morphs('registration_certificateable');
-            $table->date('certificate');
-            $table->date('emission');
-            $table->date('expedition');
-            $table->date('validity');
+            $table->unsignedBigInteger('plan_id');
+            $table->string('name');
+            $table->text('description');
+            $table->string('slug');
             $table->timestamps();
+
+            $table->foreign('plan_id')->references('id')->on('plans');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('registration_certificates');
+        Schema::dropIfExists('type_plans');
     }
 };

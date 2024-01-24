@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registration_certificates', function (Blueprint $table) {
+        Schema::create('membership_records', function (Blueprint $table) {
             $table->id();
-            $table->morphs('registration_certificateable');
-            $table->date('certificate');
-            $table->date('emission');
-            $table->date('expedition');
-            $table->date('validity');
+            $table->unsignedBigInteger('club_id');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
+
+            $table->foreign('club_id')->references('id')->on('clubs');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('registration_certificates');
+        Schema::dropIfExists('membership_records');
     }
 };
