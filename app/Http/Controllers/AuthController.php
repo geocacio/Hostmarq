@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,14 +50,23 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:users',
+            'role_id' => 'required|integer|exists:roles,id',
             'password' => 'required|string|min:6|max:100',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }
+
+        $role = Role::find($request->input('role_id'));
+        xdebug_break();
+        // Verifique se o usuário autenticado tem a permissão para criar este tipo de usuário
+        if (!Auth::user() || !Auth::user()->hasPermission('create-' . $role->name)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
         }
 
         $user = User::create([

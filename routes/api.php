@@ -21,10 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout']);
 
 Route::middleware('jwt.verify')->group(function () {
+    Route::post('register', [AuthController::class, 'register']);
     Route::get('/test', function () {
         return response()->json(['message' => 'Você está autenticado!'], 200);
     })->middleware('permission:create-post');
