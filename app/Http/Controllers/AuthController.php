@@ -62,6 +62,12 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        // Verifique se o usuário autenticado tem a permissão para criar este tipo de usuário
+        $role = Role::find($request->input('role_id'));
+        if (!Auth::user() || !Auth::user()->hasPermission($role->name, 'create-' . $role->name)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email, 
