@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('registration')->nullable()->after('id')->comment('Matrícula');
             $table->string('cnh')->nullable();
             $table->date('cnh_issue_date')->nullable()->comment('Data de emissão da CNH');
             $table->string('cnh_expiration_date')->nullable()->comment('Data de expiração da CNH');
