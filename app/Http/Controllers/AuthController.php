@@ -62,13 +62,6 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $role = Role::find($request->input('role_id'));
-        xdebug_break();
-        // Verifique se o usuário autenticado tem a permissão para criar este tipo de usuário
-        if (!Auth::user() || !Auth::user()->hasPermission('create-' . $role->name)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email, 
