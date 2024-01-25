@@ -27,5 +27,5 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::middleware('jwt.verify')->group(function () {
     Route::get('/test', function () {
         return response()->json(['message' => 'Você está autenticado!'], 200);
-    });
+    })->middleware('permission:create-post');
 });

@@ -87,4 +87,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Club::class, 'owner_id');
     }
+
+    public function clubs()
+    {
+        return $this->belongsToMany(Club::class, 'club_users');
+    }
+
+    public function hasPermission($permission)
+    {
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains('name', $permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
