@@ -9,7 +9,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function givePermission(Request $request, User $user)
+    public function index()
+    {
+        $users = User::with('roles', 'roles.permissions')->get();
+        return response()->json($users);
+    }
+
+    public function giveRole(Request $request, User $user)
     {
         //validação
         $validatedData = $request->validate([

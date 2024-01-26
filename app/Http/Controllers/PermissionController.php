@@ -12,7 +12,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Permission::with('roles')->get();
+        return response()->json($permissions);
     }
 
     /**
