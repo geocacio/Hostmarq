@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,13 @@ Route::post('logout', [AuthController::class, 'logout']);
 
 Route::middleware('jwt.verify')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
+
+    //dar permissões ao usuario
+    Route::post('user/{user}/give-permission', [UserController::class, 'givePermission']);
+
+    //adicionar permissões a uma role
+    Route::post('/role/{role}/add-permission', 'RoleController@addPermission');
+
     Route::get('/test', function () {
         return response()->json(['message' => 'Você está autenticado!'], 200);
     })->middleware('permission:create-post');

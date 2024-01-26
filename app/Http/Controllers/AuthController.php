@@ -54,7 +54,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:users',
-            'role_id' => 'required|integer|exists:roles,id',
+            'role_id' => 'nullable|integer|exists:roles,id',
             'password' => 'required|string|min:6|max:100',
         ]);
 
@@ -64,7 +64,8 @@ class AuthController extends Controller
 
         // Verifique se o usuário autenticado tem a permissão para criar este tipo de usuário
         $role = Role::find($request->input('role_id'));
-        if (!Auth::user() || !Auth::user()->hasPermission($role->name, 'create-' . $role->name)) {
+        $userLogged = User::find(auth()->user()->id);
+        if (!$userLogged || !$userLogged->hasPermission($role->name, 'create-' . $role->name)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -74,12 +75,11 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        if(isset($request->role_id)){
+            $user->roles()->attach($request->input('role_id'));
+        }
 
         $response = [
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 1200,
             'user' => $user->toArray(),
         ];
 
@@ -88,7 +88,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->logout();
+        JWTAuth::invalidate(JWTAuth::getToken());
 
         return response()->json(['message' => 'Successfully logged out']);
     }
