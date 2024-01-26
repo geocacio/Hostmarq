@@ -30,7 +30,7 @@ class RoleSeeder extends Seeder
                 'description' => 'ClubAdmin',
             ],
             [
-                'name' => 'user',
+                'name' => 'User',
                 'description' => 'User',
             ],
         ];

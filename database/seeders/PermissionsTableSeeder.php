@@ -18,7 +18,7 @@ class PermissionsTableSeeder extends Seeder
             'update',
             'delete',
         ];
-        $userTypes = [
+        $roles = [
             'Master',
             'Admin',
             'ClubMaster',
@@ -26,10 +26,10 @@ class PermissionsTableSeeder extends Seeder
             'User',
         ];
 
-        foreach($userTypes as $userType) {
+        foreach($roles as $role) {
             foreach($actions as $action) {
                 \App\Models\Permission::create([
-                    'name' => $action . '-' . $userType,
+                    'name' => $action . '-' . $role,
                 ]);
             }
         }

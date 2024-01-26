@@ -46,7 +46,7 @@ Route::middleware('jwt.verify')->group(function () {
         Route::get('/', [RoleController::class, 'index']);
 
         //adicionar permissões a uma role
-        Route::post('/roles/{role}/add-permission', [RoleController::class, 'addPermission']);
+        Route::post('/{role}/add-permission', [RoleController::class, 'addPermission']);
     });
 
     Route::prefix('permissions')->group(function(){

@@ -31,21 +31,4 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Role given successfully']);
     }
-
-    public function addPermission(Request $request, Role $role)
-    {
-        //validação
-        $validatedData = $request->validate([
-            'permission_id' => 'required|integer|exists:permissions,id',
-        ]);
-
-        $permission = Permission::find($validatedData['permission_id']);
-        if (!$permission) {
-            return response()->json(['error' => 'Permission not found'], 404);
-        }
-
-        $role->permissions()->attach($validatedData['permission_id']);
-
-        return response()->json(['message' => 'Permission added successfully']);
-    }
 }
