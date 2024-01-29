@@ -90,7 +90,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function clubs()
     {
-        return $this->belongsToMany(Club::class, 'club_users');
+        return $this->belongsToMany(Club::class, 'user_club');
     }
 
     public function hasPermission($permission)
@@ -104,6 +104,25 @@ class User extends Authenticatable implements JWTSubject
 
         foreach ($this->roles as $role) {
             if ($role->permissions->contains('name', $permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    // Função que retorna todas as roles do usuário
+    public function getRoles()
+    {
+        $this->load('roles');
+        return $this->roles;
+    }
+
+    // Função que verifica se o usuário tem uma role específica
+    public function hasRole($roleName)
+    {
+        foreach ($this->getRoles() as $role) {
+            if ($role->name == $roleName) {
                 return true;
             }
         }
