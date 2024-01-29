@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('weapons', function (Blueprint $table) {
+        Schema::create('weapon_types', function (Blueprint $table) {
             $table->id();
-            $table->string('number_sigma');
-            $table->string('origin');
             $table->timestamps();
         });
     }
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('weapons');
+        Schema::dropIfExists('weapon_types');
     }
 };
