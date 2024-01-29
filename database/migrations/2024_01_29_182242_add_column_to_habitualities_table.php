@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('habitualities', function (Blueprint $table) {
-            $table->unsignedBigInteger('event_id')->after('location');
-            $table->unsignedBigInteger('location_id')->after('event');
+            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('location_id');
 
             $table->foreign('event_id')->references('id')->on('events');
             $table->foreign('location_id')->references('id')->on('locations');

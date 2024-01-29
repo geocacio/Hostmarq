@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CaliberController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,13 @@ Route::middleware('jwt.verify')->group(function () {
 
     Route::prefix('permissions')->group(function(){
         Route::get('/', [PermissionController::class, 'index']);
+    });
+
+    route::prefix('calibres')->group(function(){
+        Route::get('/', [CaliberController::class, 'index'])->middleware('permission:read-Caliber');
+        Route::post('/', [CaliberController::class, 'store'])->middleware('permission:create-Caliber');
+        Route::put('/{caliber}', [CaliberController::class, 'update'])->middleware('permission:update-Caliber');
+        Route::delete('/{caliber}', [CaliberController::class, 'destroy'])->middleware('permission:delete-Caliber');
     });
 
 });

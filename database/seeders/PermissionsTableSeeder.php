@@ -24,11 +24,17 @@ class PermissionsTableSeeder extends Seeder
             'ClubMaster',
             'ClubAdmin',
             'User',
+            'Type', 
+            'Model',
+            'Caliber',
+            'Weapon',
+            'Habituality',
+            
         ];
 
         foreach($roles as $role) {
             foreach($actions as $action) {
-                \App\Models\Permission::create([
+                \App\Models\Permission::firstOrCreate([
                     'name' => $action . '-' . $role,
                 ]);
             }

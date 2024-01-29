@@ -12,7 +12,8 @@ class CaliberController extends Controller
      */
     public function index()
     {
-        //
+        $calibers = Caliber::all();
+        return response()->json($calibers);
     }
 
     /**
@@ -28,7 +29,26 @@ class CaliberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+        ]);
+        $validatedData['slug'] = Caliber::uniqSlug($validatedData['name']);
+
+        $caliber = Caliber::create($validatedData);
+
+        if ($caliber) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Calibre cadastrado com sucesso!',
+                'data' => $caliber
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao cadastrar calibre, por favor tente novamente mais tarde!',
+        ]);
     }
 
     /**
@@ -52,7 +72,23 @@ class CaliberController extends Controller
      */
     public function update(Request $request, Caliber $caliber)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+        ]);
+
+        if($caliber->update($validatedData)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Calibre atualizado com sucesso!',
+                'data' => $caliber
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao atualizar calibre, por favor tente novamente mais tarde!',
+        ]);
     }
 
     /**
@@ -60,6 +96,16 @@ class CaliberController extends Controller
      */
     public function destroy(Caliber $caliber)
     {
-        //
+        if($caliber->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Calibre removido com sucesso!',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao remover calibre, por favor tente novamente mais tarde!',
+        ]);
     }
 }
