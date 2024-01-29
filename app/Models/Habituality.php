@@ -34,6 +34,16 @@ class Habituality extends Model
         return $this->hasMany(AmmunitionHabituality::class);
     }
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
@@ -58,4 +68,5 @@ class Habituality extends Model
 
         return $slug;
     }
+    
 }
