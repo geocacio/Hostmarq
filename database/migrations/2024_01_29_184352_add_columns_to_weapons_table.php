@@ -29,7 +29,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('weapons', function (Blueprint $table) {
-            //
+            $table->dropForeign(['caliber_id']);
+            $table->dropForeign(['model_id']);
+            $table->dropForeign(['type_id']);
+
+            $table->dropColumn('user_id');
+            $table->dropColumn('caliber_id');
+            $table->dropColumn('model_id');
+            $table->dropColumn('type_id');
         });
     }
 };
