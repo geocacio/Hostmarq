@@ -6,6 +6,7 @@ use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WeaponTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,14 @@ Route::middleware('jwt.verify')->group(function () {
         Route::post('/', [ClubController::class, 'store'])->middleware('permission:create-Club');
         Route::put('/{club}', [ClubController::class, 'update'])->middleware('permission:update-Club');
         Route::delete('/{club}', [ClubController::class, 'destroy'])->middleware('permission:delete-Club');
+
+        //rotas para tipos de armas
+        Route::prefix('/{club}/weapon-types')->group(function(){
+            Route::get('/', [WeaponTypeController::class, 'index'])->middleware('permission:read-Type');
+            Route::post('/', [WeaponTypeController::class, 'store'])->middleware('permission:create-Type');
+            Route::put('/{weaponType}', [WeaponTypeController::class, 'update'])->middleware('permission:update-Type');
+            Route::delete('/{weaponType}', [WeaponTypeController::class, 'destroy'])->middleware('permission:delete-Type');
+        });
     });
 
     route::prefix('calibres')->group(function(){

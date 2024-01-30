@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Club;
 use App\Models\WeaponType;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,10 @@ class WeaponTypeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Club $club)
     {
-        //
+        $types = $club->weaponTypes;
+        return response()->json($types);
     }
 
     /**
@@ -26,15 +28,31 @@ class WeaponTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Club $club)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+        ]);
+
+        $type = $club->weaponTypes()->create($validatedData);
+        if ($type) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tipo criado com sucesso!',
+                'type' => $type,
+            ], 201);
+        }
+        
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao criar tipo de arma!',
+        ], 500);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(WeaponType $weaponType)
+    public function show(Club $club, WeaponType $weaponType)
     {
         //
     }
@@ -50,16 +68,41 @@ class WeaponTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WeaponType $weaponType)
+    public function update(Request $request, Club $club, WeaponType $weaponType)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+        ]);
+
+        if ($weaponType->update($validatedData)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tipo atualizado com sucesso!',
+                'type' => $weaponType,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao atualizar tipo de arma!',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WeaponType $weaponType)
+    public function destroy(Club $club, WeaponType $weaponType)
     {
-        //
+        if ($weaponType->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tipo removido com sucesso!',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao remover tipo de arma!',
+        ]);
     }
 }

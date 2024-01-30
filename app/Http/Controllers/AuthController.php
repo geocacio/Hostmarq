@@ -73,6 +73,13 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        if ($userLogged->hasRole('clubMaster') || $userLogged->hasRole('clubAdmin')) {
+            $club = Club::find($request->input('club_id'));
+            if (!$club) {
+                return response()->json(['error' => 'Clube não encontrado. É preciso ter um clube para poder criar usuários!'], 404);
+            }
+        }
+
         $user = User::create([
             'club_id' => $userLogged->club ? $userLogged->club->id : $request->club_id,
             'name' => $request->name,
