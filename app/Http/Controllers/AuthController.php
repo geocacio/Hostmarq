@@ -73,15 +73,8 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        if(isset($request->club_id)){
-            $club = Club::find($request->club_id);
-            if(!$club){
-                return response()->json(['error' => 'Clube não encontrado!'], 404);
-            }
-        }
-
         $user = User::create([
-            'club_id' => $request->club_id,
+            'club_id' => $userLogged->club ? $userLogged->club->id : $request->club_id,
             'name' => $request->name,
             'email' => $request->email,
             'registration' => $this->generateMatricula(),
@@ -91,14 +84,6 @@ class AuthController extends Controller
         if (isset($request->role_id)) {
             $user->roles()->attach($request->input('role_id'));
         }
-
-        //Se o usuário for dono de um clube, adicionar o usuário ao clube (user_clube)
-        // if ($userLogged->hasRole('clubMaster') || $userLogged->hasRole('clubAdmin')) {
-        //     $club = Club::find($request->input('club_id'));
-        //     if ($club) {
-        //         $club->users()->attach($user->id);
-        //     }
-        // }
 
         $response = [
             'user' => $user->toArray(),
