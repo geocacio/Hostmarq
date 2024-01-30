@@ -31,12 +31,7 @@ class Club extends Model
 
     public function ownedClubs()
     {
-        return $this->hasMany(User::class, 'owner_id');
-    }
-
-    public function user()
-    {
-        return $this->hasOne(User::class);
+        return $this->hasOne(User::class, 'owner_id');
     }
 
     public function getRouteKeyName()

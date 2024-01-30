@@ -29,6 +29,7 @@ class ClubController extends Controller
      */
     public function store(Request $request)
     {
+        // xdebug_break();
         $validatedData = $request->validate([
             'name' => 'required',
             'acronym' => 'required',
@@ -49,7 +50,7 @@ class ClubController extends Controller
         $validatedData['slug'] = Club::uniqSlug($validatedData['name']);
 
         $user = auth()->user();
-        if ($user->club) {
+        if ($user->owner) {
             return response()->json(['error' => 'Este usuário já tem um clube!'], 400);
         }
 
@@ -89,6 +90,7 @@ class ClubController extends Controller
      */
     public function update(Request $request, Club $club)
     {
+        xdebug_break();
         $validatedData = $request->validate([
             'name' => 'required',
             'acronym' => 'required',
