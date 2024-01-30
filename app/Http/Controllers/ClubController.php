@@ -29,7 +29,6 @@ class ClubController extends Controller
      */
     public function store(Request $request)
     {
-        // xdebug_break();
         $validatedData = $request->validate([
             'name' => 'required',
             'acronym' => 'required',
@@ -90,7 +89,6 @@ class ClubController extends Controller
      */
     public function update(Request $request, Club $club)
     {
-        xdebug_break();
         $validatedData = $request->validate([
             'name' => 'required',
             'acronym' => 'required',
