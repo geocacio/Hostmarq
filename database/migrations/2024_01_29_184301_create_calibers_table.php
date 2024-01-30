@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('calibers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('club_id')->nullable();
             $table->string('name');
             $table->enum('type', ['permitted', 'restricted']);
             $table->string('slug');
             $table->timestamps();
+
+            $table->foreign('club_id')->references('id')->on('clubs');
         });
     }
 
