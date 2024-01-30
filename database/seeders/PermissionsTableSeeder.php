@@ -21,8 +21,7 @@ class PermissionsTableSeeder extends Seeder
         $roles = [
             'Master',
             'Admin',
-            'ClubMaster',
-            'ClubAdmin',
+            'Club',
             'User',
             'Type', 
             'Model',

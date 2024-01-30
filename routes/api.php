@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CaliberController;
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -52,6 +53,13 @@ Route::middleware('jwt.verify')->group(function () {
 
     Route::prefix('permissions')->group(function(){
         Route::get('/', [PermissionController::class, 'index']);
+    });
+
+    Route::prefix('clubs')->group(function(){
+        Route::get('/', [ClubController::class, 'index'])->middleware('permission:read-Club');
+        Route::post('/', [ClubController::class, 'store'])->middleware('permission:create-Club');
+        Route::put('/{club}', [ClubController::class, 'update'])->middleware('permission:update-Club');
+        Route::delete('/{club}', [ClubController::class, 'destroy'])->middleware('permission:delete-Club');
     });
 
     route::prefix('calibres')->group(function(){
