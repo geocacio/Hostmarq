@@ -11,9 +11,10 @@ class WeaponController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Club $club)
+    public function index()
     {
-        $weapons = $club->weapons;
+        $user = auth()->user();
+        $weapons = $user->weapons->load('caliber', 'model', 'type');
         return response()->json($weapons);
     }
 
@@ -28,7 +29,7 @@ class WeaponController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Club $club)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'number_sigma' => 'required',
@@ -37,8 +38,9 @@ class WeaponController extends Controller
             'model_id' => 'required',
             'type_id' => 'required',
         ]);
-        $validatedData['user_id'] = auth()->user()->id;
-        $weapon = $club->weapons()->create($validatedData);
+        
+        $user = \App\Models\User::find(auth()->user()->id);
+        $weapon = $user->weapons()->create($validatedData);
 
         if ($weapon) {
             return response()->json([
@@ -73,7 +75,7 @@ class WeaponController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Club $club, Weapon $weapon)
+    public function update(Request $request, Weapon $weapon)
     {
         $validatedData = $request->validate([
             'number_sigma' => 'required',
@@ -82,7 +84,7 @@ class WeaponController extends Controller
             'model_id' => 'required',
             'type_id' => 'required',
         ]);
-
+        
         if ($weapon->update($validatedData)) {
             return response()->json([
                 'status' => 'success',
@@ -100,7 +102,7 @@ class WeaponController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Club $club, Weapon $weapon)
+    public function destroy(Weapon $weapon)
     {
         if ($weapon->delete()) {
             return response()->json([

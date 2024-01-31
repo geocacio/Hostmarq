@@ -34,6 +34,11 @@ class Club extends Model
         return $this->hasOne(User::class, 'owner_id');
     }
 
+    public function weapons()
+    {
+        return $this->hasMany(Weapon::class);
+    }
+
     public function weaponTypes()
     {
         return $this->hasMany(WeaponType::class);

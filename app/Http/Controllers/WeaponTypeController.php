@@ -33,7 +33,7 @@ class WeaponTypeController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
         ]);
-
+        
         $type = $club->weaponTypes()->create($validatedData);
         if ($type) {
             return response()->json([
