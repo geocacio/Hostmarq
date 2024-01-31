@@ -11,10 +11,16 @@ class Caliber extends Model
     use HasFactory;
 
     protected $fillable = [
+        'club_id',
         'name',
         'type',
         'slug'
     ];
+
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
 
     public function getRouteKeyName()
     {

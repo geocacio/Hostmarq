@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles', 'roles.permissions')->get();
+        $users = User::with('roles', 'roles.permissions', 'club')->get();
         return response()->json($users);
     }
 

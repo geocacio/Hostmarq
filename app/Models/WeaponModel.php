@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class WeaponModel extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'club_id'];
+
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
 }

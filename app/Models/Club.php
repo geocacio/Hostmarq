@@ -39,6 +39,16 @@ class Club extends Model
         return $this->hasMany(WeaponType::class);
     }
 
+    public function weaponModels()
+    {
+        return $this->hasMany(WeaponModel::class);
+    }
+
+    public function calibers()
+    {
+        return $this->hasMany(Caliber::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

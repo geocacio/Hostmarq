@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caliber;
+use App\Models\Club;
 use Illuminate\Http\Request;
 
 class CaliberController extends Controller
@@ -10,9 +11,9 @@ class CaliberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Club $club)
     {
-        $calibers = Caliber::all();
+        $calibers = $club->calibers;
         return response()->json($calibers);
     }
 
@@ -27,12 +28,13 @@ class CaliberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Club $club)
     {
         $validatedData = $request->validate([
             'name' => 'required',
             'type' => 'required',
         ]);
+        $validatedData['club_id'] = $club->id;
         $validatedData['slug'] = Caliber::uniqSlug($validatedData['name']);
 
         $caliber = Caliber::create($validatedData);
@@ -54,9 +56,9 @@ class CaliberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Caliber $caliber)
+    public function show(Club $club, Caliber $caliber)
     {
-        //
+        return response()->json($caliber);
     }
 
     /**
@@ -70,7 +72,7 @@ class CaliberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Caliber $caliber)
+    public function update(Request $request, Club $club, Caliber $caliber)
     {
         $validatedData = $request->validate([
             'name' => 'required',
@@ -94,7 +96,7 @@ class CaliberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Caliber $caliber)
+    public function destroy(Club $club, Caliber $caliber)
     {
         if($caliber->delete()) {
             return response()->json([

@@ -6,6 +6,8 @@ use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WeaponController;
+use App\Http\Controllers\WeaponModelController;
 use App\Http\Controllers\WeaponTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -69,13 +71,32 @@ Route::middleware('jwt.verify')->group(function () {
             Route::put('/{weaponType}', [WeaponTypeController::class, 'update'])->middleware('permission:update-Type');
             Route::delete('/{weaponType}', [WeaponTypeController::class, 'destroy'])->middleware('permission:delete-Type');
         });
-    });
 
-    route::prefix('calibres')->group(function(){
-        Route::get('/', [CaliberController::class, 'index'])->middleware('permission:read-Caliber');
-        Route::post('/', [CaliberController::class, 'store'])->middleware('permission:create-Caliber');
-        Route::put('/{caliber}', [CaliberController::class, 'update'])->middleware('permission:update-Caliber');
-        Route::delete('/{caliber}', [CaliberController::class, 'destroy'])->middleware('permission:delete-Caliber');
+        //rotas para modelos de armas
+        Route::prefix('/{club}/weapon-models')->group(function(){
+            Route::get('/', [WeaponModelController::class, 'index'])->middleware('permission:read-Model');
+            Route::post('/', [WeaponModelController::class, 'store'])->middleware('permission:create-Model');
+            Route::put('/{weaponModel}', [WeaponModelController::class, 'update'])->middleware('permission:update-Model');
+            Route::delete('/{weaponModel}', [WeaponModelController::class, 'destroy'])->middleware('permission:delete-Model');
+        });
+
+        //rotas para calibres
+        Route::prefix('/{club}/calibres')->group(function(){
+            Route::get('/', [CaliberController::class, 'index'])->middleware('permission:read-Caliber');
+            Route::post('/', [CaliberController::class, 'store'])->middleware('permission:create-Caliber');
+            Route::put('/{caliber}', [CaliberController::class, 'update'])->middleware('permission:update-Caliber');
+            Route::delete('/{caliber}', [CaliberController::class, 'destroy'])->middleware('permission:delete-Caliber');
+            // Route::get('/{caliber}', [CaliberController::class, 'show']);
+        });
+
+        //rotas para armas
+        Route::prefix('/{club}/weapons')->group(function(){
+            Route::get('/', [WeaponController::class, 'index'])->middleware('permission:read-Weapon');
+            Route::post('/', [WeaponController::class, 'store'])->middleware('permission:create-Weapon');
+            Route::put('/{weapon}', [WeaponController::class, 'update'])->middleware('permission:update-Weapon');
+            Route::delete('/{weapon}', [WeaponController::class, 'destroy'])->middleware('permission:delete-Weapon');
+        });
+        
     });
 
 });

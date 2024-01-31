@@ -84,6 +84,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Role::class, 'user_roles');
     }
 
+    public function club()
+    {
+        return $this->hasOne(Club::class, 'owner_id');
+    }
+
     public function owner()
     {
         return $this->hasOne(Club::class, 'owner_id');
