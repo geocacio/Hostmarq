@@ -28,6 +28,8 @@ class PermissionsTableSeeder extends Seeder
             'Caliber',
             'Weapon',
             'Habituality',
+            'Event',
+            'Location',
             
         ];
 

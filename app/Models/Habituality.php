@@ -14,9 +14,8 @@ class Habituality extends Model
         'user_id',
         'weapon_id',
         'date_time',
-        'location',
-        'event',
-        'slug',
+        'event_id',
+        'location_id',
     ];
 
     public function user()

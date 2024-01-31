@@ -49,6 +49,16 @@ class Club extends Model
         return $this->hasMany(WeaponModel::class);
     }
 
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
+
     public function calibers()
     {
         return $this->hasMany(Caliber::class);

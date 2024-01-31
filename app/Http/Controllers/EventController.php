@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Club;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,10 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Club $club)
     {
-        //
+        $events = $club->events;
+        return response()->json($events);
     }
 
     /**
@@ -26,9 +28,26 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Club $club)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        $event = $club->events()->create($validated);
+
+        if ($event) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Evento criado com sucesso!',
+                'event' => $event,
+            ], 201);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao criar evento!',
+        ], 500);
     }
 
     /**
@@ -50,16 +69,41 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, Club $club, Event $event)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        if ($event->update($validated)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Evento atualizado com sucesso!',
+                'event' => $event,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao atualizar evento!',
+        ], 500);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event)
+    public function destroy(Club $club, Event $event)
     {
-        //
+        if ($event->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Evento deletado com sucesso!',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Erro ao deletar evento!',
+        ], 500);
     }
 }
