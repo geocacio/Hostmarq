@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CaliberController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HabitualityController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -116,6 +117,14 @@ Route::middleware('jwt.verify')->group(function () {
         Route::post('/', [WeaponController::class, 'store'])->middleware('permission:create-Weapon');
         Route::put('/{weapon}', [WeaponController::class, 'update'])->middleware('permission:update-Weapon');
         Route::delete('/{weapon}', [WeaponController::class, 'destroy'])->middleware('permission:delete-Weapon');
+    });
+
+    //rotas para habitualidades
+    Route::prefix('/habitualities')->group(function(){
+        Route::get('/', [HabitualityController::class, 'index'])->middleware('permission:read-Habituality');
+        Route::post('/', [HabitualityController::class, 'store'])->middleware('permission:create-Habituality');
+        Route::put('/{habituality}', [HabitualityController::class, 'update'])->middleware('permission:update-Habituality');
+        Route::delete('/{habituality}', [HabitualityController::class, 'destroy'])->middleware('permission:delete-Habituality');
     });
 
 });

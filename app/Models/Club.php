@@ -64,6 +64,11 @@ class Club extends Model
         return $this->hasMany(Caliber::class);
     }
 
+    public function habitualities()
+    {
+        return $this->hasMany(Habituality::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

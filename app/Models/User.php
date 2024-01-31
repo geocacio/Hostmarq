@@ -94,6 +94,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Club::class, 'owner_id');
     }
 
+    public function habitualities()
+    {
+        return $this->hasMany(Habituality::class);
+    }
+
     public function weapons()
     {
         return $this->hasMany(Weapon::class);
