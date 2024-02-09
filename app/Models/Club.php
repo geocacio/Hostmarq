@@ -69,11 +69,16 @@ class Club extends Model
         return $this->hasMany(Habituality::class);
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class, 'club_id');
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
     }
-    
+
     public static function uniqSlug($name)
     {
         $slug = Str::slug($name);

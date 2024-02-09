@@ -89,6 +89,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Club::class, 'owner_id');
     }
 
+    public function clubUsers()
+    {
+        return $this->belongsTo(Club::class, 'club_id');
+    }
+
     public function owner()
     {
         return $this->hasOne(Club::class, 'owner_id');
@@ -121,7 +126,7 @@ class User extends Authenticatable implements JWTSubject
 
         return false;
     }
-    
+
     // Função que retorna todas as roles do usuário
     public function getRoles()
     {

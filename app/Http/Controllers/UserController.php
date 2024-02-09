@@ -11,7 +11,21 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles', 'roles.permissions', 'club')->get();
+        $authUser = User::find(auth()->user()->id);
+        
+        if ($authUser->hasRole('Master') || $authUser->hasRole('Admin')) {
+            // Se o usuário for Master ou Admin, retorna todos os usuários exceto o dele
+            $users = User::with('roles', 'roles.permissions', 'club')
+                ->where('id', '!=', $authUser->id)
+                ->get();
+        } else if ($authUser->hasRole('ClubMaster') || $authUser->hasRole('ClubAdmin')) {
+            // Se o usuário for ClubMaster ou ClubAdmin, retorna todos os usuários que pertencem ao mesmo clube
+            $users = $authUser->club->users()->with('roles', 'roles.permissions')->get();
+        } else {
+            // Se o usuário não tiver nenhuma das roles acima, retorna apenas o próprio usuário
+            $users = [$authUser->load('roles', 'roles.permissions', 'club')];
+        }
+
         return response()->json($users);
     }
 
