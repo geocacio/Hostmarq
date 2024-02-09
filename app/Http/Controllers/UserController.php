@@ -22,8 +22,8 @@ class UserController extends Controller
             // Se o usuário for ClubMaster ou ClubAdmin, retorna todos os usuários que pertencem ao mesmo clube
             $users = $authUser->club->users()->with('roles', 'roles.permissions')->get();
         } else {
-            // Se o usuário não tiver nenhuma das roles acima, retorna apenas o próprio usuário
-            $users = [$authUser->load('roles', 'roles.permissions', 'club')];
+            // retornar acesso não autorizado
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         return response()->json($users);
