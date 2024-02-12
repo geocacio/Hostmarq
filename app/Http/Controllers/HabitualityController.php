@@ -15,7 +15,7 @@ class HabitualityController extends Controller
     public function index(Club $club)
     {
 
-        $habitualities = $club->habitualities->load('ammunitionHabitualities', 'event', 'location', 'weapon');
+        $habitualities = $club->habitualities->load('ammunitionHabitualities', 'event', 'location', 'weapon', 'weapon.caliber', 'weapon.model', 'weapon.type');
 
         return response()->json($habitualities);
     }
