@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Club;
 use App\Models\Habituality;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,14 +12,10 @@ class HabitualityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Club $club)
     {
-        $user = User::find(auth()->user()->id);
-        if ($user->owner()->count() > 0) {
-            $habitualities = $user->club->habitualities->load('ammunitionHabitualities', 'event', 'location', 'weapon');
-        } else {
-            $habitualities = $user->habitualities->load('ammunitionHabitualities', 'event', 'location', 'weapon');
-        }
+
+        $habitualities = $club->habitualities->load('ammunitionHabitualities', 'event', 'location', 'weapon');
 
         return response()->json($habitualities);
     }

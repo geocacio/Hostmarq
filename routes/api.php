@@ -108,6 +108,14 @@ Route::middleware('jwt.verify')->group(function () {
             Route::put('/{location}', [LocationController::class, 'update'])->middleware('permission:update-Location');
             Route::delete('/{location}', [LocationController::class, 'destroy'])->middleware('permission:delete-Location');
         });
+
+        //rotas para habitualidades
+        Route::prefix('/{club}/habitualities')->group(function(){
+            Route::get('/', [HabitualityController::class, 'index'])->middleware('permission:read-Habituality');
+            Route::post('/', [HabitualityController::class, 'store'])->middleware('permission:create-Habituality');
+            Route::put('/{habituality}', [HabitualityController::class, 'update'])->middleware('permission:update-Habituality');
+            Route::delete('/{habituality}', [HabitualityController::class, 'destroy'])->middleware('permission:delete-Habituality');
+        });
         
     });
 
@@ -120,11 +128,11 @@ Route::middleware('jwt.verify')->group(function () {
     });
 
     //rotas para habitualidades
-    Route::prefix('/habitualities')->group(function(){
-        Route::get('/', [HabitualityController::class, 'index'])->middleware('permission:read-Habituality');
-        Route::post('/', [HabitualityController::class, 'store'])->middleware('permission:create-Habituality');
-        Route::put('/{habituality}', [HabitualityController::class, 'update'])->middleware('permission:update-Habituality');
-        Route::delete('/{habituality}', [HabitualityController::class, 'destroy'])->middleware('permission:delete-Habituality');
-    });
+    // Route::prefix('/habitualities')->group(function(){
+    //     Route::get('/', [HabitualityController::class, 'index'])->middleware('permission:read-Habituality');
+    //     Route::post('/', [HabitualityController::class, 'store'])->middleware('permission:create-Habituality');
+    //     Route::put('/{habituality}', [HabitualityController::class, 'update'])->middleware('permission:update-Habituality');
+    //     Route::delete('/{habituality}', [HabitualityController::class, 'destroy'])->middleware('permission:delete-Habituality');
+    // });
 
 });
