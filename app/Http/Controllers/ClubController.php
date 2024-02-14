@@ -10,9 +10,17 @@ class ClubController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clubs = Club::all();
+        $query = Club::query();
+        $search = $request->search;
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        }
+
+        $clubs = $query->paginate(9);
         return response()->json($clubs);
     }
 
