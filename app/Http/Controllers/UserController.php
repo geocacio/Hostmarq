@@ -32,7 +32,7 @@ class UserController extends Controller
                 ->orWhere('email', 'like', '%' . $search . '%');
         }
 
-        $users = $query->paginate(9);
+        $users = $query->paginate(12);
         return response()->json($users);
     }
 
