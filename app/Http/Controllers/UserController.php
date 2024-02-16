@@ -78,4 +78,29 @@ class UserController extends Controller
             'user' => $user->toArray(),
         ]);
     }
+
+    public function destroy(User $user)
+    {
+        xdebug_break();
+        $authUser = auth()->user();
+
+        if ($authUser->hasRole('Master') || $authUser->hasRole('Admin')) {
+            // Se o usuário for Master ou Admin, permite a exclusão de qualquer usuário
+            $user->roles()->detach();
+            $user->delete();
+        } else if ($authUser->hasRole('ClubMaster') || $authUser->hasRole('ClubAdmin')) {
+            // Se o usuário for ClubMaster ou ClubAdmin, permite a exclusão de qualquer usuário que pertença ao mesmo clube
+            if ($user->club_id == $authUser->club_id) {
+                $user->roles()->detach();
+                $user->delete();
+            } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+        } else {
+            // retornar acesso não autorizado
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json(['success' => 'User deleted successfully']);
+    }
 }
