@@ -94,6 +94,7 @@ class AuthController extends Controller
         }
 
         $response = [
+            'success' => 'User created successfully',
             'user' => $user->toArray(),
         ];
 
@@ -120,7 +121,7 @@ class AuthController extends Controller
     public function generateMatricula()
     {
         $lastUser = User::orderBy('created_at', 'desc')->first();
-        $lastMatricula = $lastUser ? $lastUser->matricula : 0;
+        $lastMatricula = $lastUser ? $lastUser->registration : 0;
 
         $newMatricula = $lastMatricula + 1;
 

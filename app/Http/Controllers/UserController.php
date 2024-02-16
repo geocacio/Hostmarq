@@ -52,4 +52,30 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Role given successfully']);
     }
+
+    public function update(Request $request, User $user)
+    {
+        // xdebug_break();
+        $authUser = auth()->user();
+
+        if ($authUser->hasRole('Master') || $authUser->hasRole('Admin')) {
+            // Se o usuário for Master ou Admin, permite a atualização de qualquer usuário
+            $user->update($request->all());
+        } else if ($authUser->hasRole('ClubMaster') || $authUser->hasRole('ClubAdmin')) {
+            // Se o usuário for ClubMaster ou ClubAdmin, permite a atualização de qualquer usuário que pertença ao mesmo clube
+            if ($user->club_id == $authUser->club_id) {
+                $user->update($request->all());
+            } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+        } else {
+            // retornar acesso não autorizado
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'success' => 'User updated successfully',
+            'user' => $user->toArray(),
+        ]);
+    }
 }
