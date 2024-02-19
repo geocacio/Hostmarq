@@ -89,7 +89,7 @@ class ClubUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Club $club)
+    public function update(Request $request, Club $my_club)
     {
         $validatedData = $request->validate([
             'name' => 'required',
@@ -107,11 +107,11 @@ class ClubUserController extends Controller
             'country' => 'required',
             'city' => 'required',
         ]);
-
-        if ($club->update($validatedData)) {
+        
+        if ($my_club->update($validatedData)) {
             return response()->json([
                 'success' => 'Clube atualizado com sucesso!',
-                'data' => $club
+                'data' => $my_club
             ]);
         }
 
