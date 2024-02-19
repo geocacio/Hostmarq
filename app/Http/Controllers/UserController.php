@@ -50,12 +50,11 @@ class UserController extends Controller
 
         $user->roles()->attach($validatedData['role_id']);
 
-        return response()->json(['message' => 'Role given successfully']);
+        return response()->json(['success' => 'Função atribuída com sucesso']);
     }
 
     public function update(Request $request, User $user)
     {
-        // xdebug_break();
         $authUser = auth()->user();
 
         if ($authUser->hasRole('Master') || $authUser->hasRole('Admin')) {
@@ -74,14 +73,13 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'success' => 'User updated successfully',
+            'success' => 'Usuário atualizado com sucesso',
             'user' => $user->toArray(),
         ]);
     }
 
     public function destroy(User $user)
     {
-        xdebug_break();
         $authUser = auth()->user();
 
         if ($authUser->hasRole('Master') || $authUser->hasRole('Admin')) {
@@ -101,6 +99,6 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['success' => 'User deleted successfully']);
+        return response()->json(['success' => 'Usuário excluído com sucesso']);
     }
 }

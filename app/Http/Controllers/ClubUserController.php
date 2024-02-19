@@ -5,23 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Club;
 use Illuminate\Http\Request;
 
-class ClubController extends Controller
+class ClubUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Club::query();
-        $search = $request->search;
-
-        if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
+        $user = auth()->user();
+        if ($user->owner) {
+            return response()->json(['data' => $user->club]);
         }
-
-        $clubs = $query->paginate(9);
-        return response()->json($clubs);
+        return response()->json(['error' => 'Este usuário não tem um clube!'], 400);
     }
 
     /**
@@ -37,7 +32,6 @@ class ClubController extends Controller
      */
     public function store(Request $request)
     {
-        xdebug_break();
         $validatedData = $request->validate([
             'name' => 'required',
             'acronym' => 'required',
@@ -65,8 +59,7 @@ class ClubController extends Controller
         $club = Club::create($validatedData);
         if($club){
             return response()->json([
-                'status' => 'success',
-                'message' => 'Clube cadastrado com sucesso!',
+                'success' => 'Clube cadastrado com sucesso!',
                 'data' => $club
             ]);
         }
@@ -74,13 +67,13 @@ class ClubController extends Controller
         return response()->json([
             'status' => 'error',
             'message' => 'Erro ao cadastrar clube, por favor tente novamente mais tarde!',
-        ]);
+        ]);        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Club $club)
+    public function show(string $id)
     {
         //
     }
@@ -88,7 +81,7 @@ class ClubController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Club $club)
+    public function edit(string $id)
     {
         //
     }
@@ -98,7 +91,6 @@ class ClubController extends Controller
      */
     public function update(Request $request, Club $club)
     {
-        xdebug_break();
         $validatedData = $request->validate([
             'name' => 'required',
             'acronym' => 'required',
@@ -116,10 +108,9 @@ class ClubController extends Controller
             'city' => 'required',
         ]);
 
-        if($club->update($validatedData)) {
+        if ($club->update($validatedData)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Clube atualizado com sucesso!',
+                'success' => 'Clube atualizado com sucesso!',
                 'data' => $club
             ]);
         }
@@ -128,23 +119,15 @@ class ClubController extends Controller
             'status' => 'error',
             'message' => 'Erro ao atualizar clube, por favor tente novamente mais tarde!',
         ]);
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Club $club)
+    public function destroy(string $id)
     {
-        if($club->delete()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Clube deletado com sucesso!',
-            ]);
-        }
-
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao deletar clube, por favor tente novamente mais tarde!',
-        ]);
+        //
     }
 }

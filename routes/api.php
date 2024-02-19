@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WeaponController;
 use App\Http\Controllers\WeaponModelController;
 use App\Http\Controllers\WeaponTypeController;
+use App\Http\Controllers\ClubUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,8 @@ Route::middleware('jwt.verify')->group(function () {
     Route::prefix('permissions')->group(function(){
         Route::get('/', [PermissionController::class, 'index']);
     });
+
+    Route::resource('my-club', ClubUserController::class);
 
     Route::prefix('clubs')->group(function(){
         Route::get('/', [ClubController::class, 'index'])->middleware('permission:read-Club');
