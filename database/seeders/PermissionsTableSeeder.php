@@ -19,7 +19,7 @@ class PermissionsTableSeeder extends Seeder
             'delete',
         ];
         $roles = [
-            'Master',
+            // 'Master',
             'Admin',
             'Club',
             'User',
