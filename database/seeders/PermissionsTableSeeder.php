@@ -30,23 +30,13 @@ class PermissionsTableSeeder extends Seeder
             'Habituality',
             'Event',
             'Location',
-            'Permission'
             
         ];
 
         foreach($roles as $role) {
-            if($role != 'Permission') {
-                foreach($actions as $action) {
-                    \App\Models\Permission::firstOrCreate([
-                        'name' => $action . '-' . $role,
-                    ]);
-                }
-            }else{
+            foreach($actions as $action) {
                 \App\Models\Permission::firstOrCreate([
-                    'name' => 'view-Permission',
-                ]);
-                \App\Models\Permission::firstOrCreate([
-                    'name' => 'toggle-Permission',
+                    'name' => $action . '-' . $role,
                 ]);
             }
         }

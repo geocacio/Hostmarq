@@ -60,6 +60,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     Route::prefix('permissions')->group(function(){
         Route::get('/', [PermissionController::class, 'index']);
+        Route::put('/{permission}', [PermissionController::class, 'update'])->middleware('permission:update-Permission');
     });
 
     Route::resource('my-club', ClubUserController::class);
