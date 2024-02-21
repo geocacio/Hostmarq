@@ -77,8 +77,12 @@ class RoleController extends Controller
             return response()->json(['error' => 'Permission not found'], 404);
         }
 
-        $role->permissions()->attach($validatedData['permission_id']);
+        $hasPermission = $role->permissions()->where('permissions.id', $validatedData['permission_id'])->exists();
 
-        return response()->json(['message' => 'Permission added successfully']);
+        $role->permissions()->toggle($validatedData['permission_id']);
+
+        $message = $hasPermission ? 'Permissão removida com sucesso!' : 'Permissão adicionada com sucesso!';
+
+        return response()->json(['success' => $message, 'data' => $role->permissions]);
     }
 }
