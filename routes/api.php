@@ -52,10 +52,10 @@ Route::middleware('jwt.verify')->group(function () {
     });
 
     Route::prefix('roles')->group(function(){
-        Route::get('/', [RoleController::class, 'index']);
+        Route::get('/', [RoleController::class, 'index'])->middleware('permission:view-Permission');
 
         //adicionar permissões a uma role
-        Route::post('/{role}/add-permission', [RoleController::class, 'addPermission']);
+        Route::post('/{role}/add-permission', [RoleController::class, 'addPermission'])->middleware('permission:toggle-Permission');
     });
 
     Route::prefix('permissions')->group(function(){
