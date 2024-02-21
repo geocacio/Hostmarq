@@ -42,13 +42,13 @@ class PermissionsTableSeeder extends Seeder
                     ]);
                 }
             }else{
-                \App\App\Models\Permission::firstOrCreate([
+                \App\Models\Permission::firstOrCreate([
                     'name' => 'view-Permission',
                 ]);
-                \App\App\Models\Permission::firstOrCreate([
+                \App\Models\Permission::firstOrCreate([
                     'name' => 'add-Permission',
                 ]);
-                \App\App\Models\Permission::firstOrCreate([
+                \App\Models\Permission::firstOrCreate([
                     'name' => 'remove-Permission',
                 ]);
             }
