@@ -22,6 +22,7 @@ class PermissionsTableSeeder extends Seeder
             // 'Master',
             'Admin',
             'Club',
+            'ClubAdmin',
             'User',
             'Type', 
             'Model',
@@ -30,15 +31,26 @@ class PermissionsTableSeeder extends Seeder
             'Habituality',
             'Event',
             'Location',
-            
+            'Permission',
         ];
 
         foreach($roles as $role) {
-            foreach($actions as $action) {
+            if($role !== 'Permission'){
+                foreach($actions as $action) {
+                    \App\Models\Permission::firstOrCreate([
+                        'name' => $action . '-' . $role,
+                    ]);
+                }
+            }else{
                 \App\Models\Permission::firstOrCreate([
-                    'name' => $action . '-' . $role,
+                    'name' => 'toggle-Permission',
                 ]);
             }
         }
+
+        //adicionar todas permissões para o usuário master
+        $permissions = \App\Models\Permission::all();
+        $role = \App\Models\Role::where('name', 'Master')->first();
+        $role->permissions()->sync($permissions);
     }
 }

@@ -13,7 +13,21 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::with('permissions')->where('name', '!=', 'Master')->get();
+        $excludeRules = [
+            'Master' => ['Master'],
+            'Admin' => ['Master', 'Admin'],
+            'ClubMaster' => ['Master', 'Admin', 'ClubMaster'],
+            'ClubAdmin' => ['Master', 'Admin', 'ClubMaster', 'ClubAdmin'],
+        ];
+
+        //pegar as permissões do usuário logado
+        $roles = auth()->user()->roles()->with('permissions', 'permissions.roles')->first();
+        $permissions = $roles->permissions;
+
+        //pegar todas as roles
+        $roles = Role::whereNotIn('name', $excludeRules[$roles->name])->get();
+        $roles['permissions'] = $permissions;
+
         return response()->json($roles);
     }
 
