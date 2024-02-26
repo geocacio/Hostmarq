@@ -20,8 +20,11 @@ class UserController extends Controller
                 ->where('id', '!=', $authUser->id);
 
         } else if ($authUser->hasRole('ClubMaster') || $authUser->hasRole('ClubAdmin')) {
-            // Se o usuário for ClubMaster ou ClubAdmin, retorna todos os usuários que pertencem ao mesmo clube
-            $users = $authUser->club->users()->with('roles', 'roles.permissions');
+            $clubId = $authUser->club_id;
+            //não pode retornar o dono do clube e nem os administradores
+            $query = User::with('roles', 'roles.permissions', 'club')
+                ->where('club_id', $clubId)
+                ->where('id', '!=', $authUser->id);
         } else {
             // retornar acesso não autorizado
             return response()->json(['error' => 'Unauthorized'], 401);
