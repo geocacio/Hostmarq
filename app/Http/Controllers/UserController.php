@@ -18,7 +18,9 @@ class UserController extends Controller
         if ($authUser->hasRole('Master') || $authUser->hasRole('Admin')) {
             // Se o usuário for Master ou Admin, retorna todos os usuários exceto o dele
             $query = User::with('roles', 'roles.permissions', 'club')
-                ->where('id', '!=', $authUser->id);
+                ->whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'Master')->orWhere('name', 'Admin');
+                });
 
         } else if ($authUser->hasRole('ClubMaster') || $authUser->hasRole('ClubAdmin')) {
             $clubId = $authUser->hasRole('ClubMaster') ? $authUser->owner_id : $authUser->club_id;
