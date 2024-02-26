@@ -34,6 +34,16 @@ class Club extends Model
         return $this->hasOne(User::class, 'owner_id');
     }
 
+    public function members(){
+        //retorna todos os membros (que não são Master, Admin, clubAdmin e nem clubMaster)
+        return $this->hasMany(User::class)->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'Master')->orWhere('name', 'Admin')->orWhere('name', 'ClubAdmin')->orWhere('name', 'ClubMaster');
+        });
+        // return $this->hasMany(User::class)->where('club_id', $this->id)->whereDoesntHave('roles', function ($query) {
+        //     $query->where('name', 'ClubAdmin')->orWhere('name', 'ClubMaster');
+        // });
+    }
+
     public function weapons()
     {
         return $this->hasMany(Weapon::class);

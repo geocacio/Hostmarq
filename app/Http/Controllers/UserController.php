@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Club;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -20,19 +21,24 @@ class UserController extends Controller
                 ->where('id', '!=', $authUser->id);
 
         } else if ($authUser->hasRole('ClubMaster') || $authUser->hasRole('ClubAdmin')) {
-            $clubId = $authUser->club_id;
+            $clubId = $authUser->hasRole('ClubMaster') ? $authUser->owner_id : $authUser->club_id;
+            
             //não pode retornar o dono do clube e nem os administradores
-            $query = User::with('roles', 'roles.permissions', 'club')
-                ->where('club_id', $clubId)
-                ->where('id', '!=', $authUser->id);
+            $club = $authUser->hasRole('ClubMaster') ? Club::where('owner_id', $authUser->id)->first() : Club::find($clubId);
+            $query = $club->users()->with('roles', 'roles.permissions', 'club')
+                ->whereDoesntHave('roles', function ($query) {
+                    $query->where('name', 'Master')->orWhere('name', 'Admin')->orWhere('name', 'ClubAdmin')->orWhere('name', 'ClubMaster');
+                });
         } else {
             // retornar acesso não autorizado
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
         }
 
         $users = $query->paginate(12);
