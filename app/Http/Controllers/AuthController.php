@@ -74,9 +74,9 @@ class AuthController extends Controller
         }
         
         if ($userLogged->hasRole('ClubMaster') || $userLogged->hasRole('ClubAdmin')) {
-            $clubId = $userLogged->club_id;
-
-            $club = Club::find($clubId);
+            $clubId = $userLogged->hasRole('ClubMaster') ? $userLogged->owner_id : $userLogged->club_id;
+            
+            $club = $userLogged->hasRole('ClubMaster') ? Club::where('owner_id', $userLogged->id)->first() : Club::find($clubId);
             if (!$club) {
                 return response()->json(['error' => 'Clube não encontrado. É preciso ter um clube para poder criar usuários!'], 404);
             }
