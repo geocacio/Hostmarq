@@ -26,7 +26,7 @@ class RoleController extends Controller
 
         //pegar todas as roles
         $roles = Role::whereNotIn('name', $excludeRules[$roles->name])->get();
-        $roles['permissions'] = $permissions;
+        // $roles['permissions'] = $permissions;
 
         return response()->json($roles);
     }
