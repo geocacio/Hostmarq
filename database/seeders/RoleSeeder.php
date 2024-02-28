@@ -38,15 +38,5 @@ class RoleSeeder extends Seeder
         foreach ($roles as $role) {
             \App\Models\Role::create($role);
         }
-
-        $user = \App\Models\User::create([
-            'name' => 'Master',
-            'email' => 'master@hostmarq.com',
-            'password' => bcrypt('password'),
-        ]);
-
-        $roleMaster = \App\Models\Role::where('name', 'Master')->first();
-        $user->roles()->attach($roleMaster);
-
     }
 }
