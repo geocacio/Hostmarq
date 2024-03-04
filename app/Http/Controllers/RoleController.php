@@ -81,10 +81,20 @@ class RoleController extends Controller
 
     public function addPermission(Request $request, Role $role)
     {
+        $user = auth()->user();
+        $club = $user->club;
         //validação
         $validatedData = $request->validate([
             'permission_id' => 'required|integer|exists:permissions,id',
         ]);
+
+        //se o usuario tiver permissão do tipo ClubMaster ou ClubAdmin precisa passar o id do clube e do usuario que concedeu a permissão
+        $validatedData['club_id'] = null;
+        $validatedData['user_granted_id'] = null;
+        if ($user->hasRole(['ClubMaster', 'ClubAdmin'])) {
+            $validatedData['club_id'] = $club->id;
+            $validatedData['user_granted_id'] = $user->id;
+        }
 
         $permission = Permission::find($validatedData['permission_id']);
         if (!$permission) {
@@ -93,10 +103,13 @@ class RoleController extends Controller
 
         $hasPermission = $role->permissions()->where('permissions.id', $validatedData['permission_id'])->exists();
 
-        $role->permissions()->toggle($validatedData['permission_id']);
-
-        $message = $hasPermission ? 'Permissão removida com sucesso!' : 'Permissão adicionada com sucesso!';
-
+        if ($hasPermission) {
+            $role->permissions()->detach($validatedData['permission_id']);
+            $message = 'Permissão removida com sucesso!';
+        } else {
+            $role->permissions()->attach($validatedData['permission_id'], ['club_id' => $validatedData['club_id'], 'user_granted_id' => $validatedData['user_granted_id']]);
+            $message = 'Permissão adicionada com sucesso!';
+        }
         return response()->json(['success' => $message, 'data' => $role->permissions]);
     }
 }
