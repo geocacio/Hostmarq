@@ -37,7 +37,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $user = User::find(auth()->user()->id)->load('roles', 'roles.permissions', 'club');
+        $user = User::find(auth()->user()->id)->load('roles', 'roles.permissions', 'roles.permissions.roles', 'club');
         $token = JWTAuth::fromUser($user);
 
         $response = [
