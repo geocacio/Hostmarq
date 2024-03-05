@@ -22,14 +22,17 @@ class RoleController extends Controller
     public function index()
     {
         //pegar as permissões do usuário logado
-        $roles = auth()->user()->roles()->with('permissions', 'permissions.roles')->first();
-        $permissions = $roles->permissions;
-
+        $roles = auth()->user()->roles()->first();
+        $permissions = $roles->load('permissions');
         //pegar todas as roles
         $roles = Role::whereNotIn('name', $this->excludeRules[$roles->name])->get();
-        // $roles['permissions'] = $permissions;
 
-        return response()->json($roles);
+        $data = [
+            'roles' => $roles,
+            'permissions' => $permissions->permissions,
+        ];
+
+        return response()->json($data);
     }
 
     /**
