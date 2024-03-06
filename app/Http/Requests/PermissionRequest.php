@@ -23,6 +23,8 @@ class PermissionRequest extends FormRequest
     {
         return [
             "permission_id" => "required|exists:permissions,id",
+            "action" => "nullable|string|in:attach,detach",
+            "clubs" => "nullable|array",
         ];
     }
 
@@ -37,6 +39,8 @@ class PermissionRequest extends FormRequest
         return [
             "permission_id.required" => "O campo permissão é obrigatório",
             "permission_id.exists" => "A permissão informada não existe",
+            "action.string" => "O campo ação deve ser um texto",
+            "clubs.array" => "O campo clubes deve ser um array",
         ];
     }
 }

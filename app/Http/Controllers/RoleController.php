@@ -95,7 +95,7 @@ class RoleController extends Controller
     public function addPermission(PermissionRequest $request, Role $role)
     {
         $payload = $request->validated();
-        return $this->permissionService->togglePermission($role, $payload['permission_id']);
+        return $this->permissionService->togglePermission($role, $payload);
 
         // $user = auth()->user();
         // $club = $user->club;
