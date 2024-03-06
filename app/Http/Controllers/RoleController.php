@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PermissionRequest;
 use App\Models\Club;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Services\PermissionService;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    private $permissionService;
+
+    public function __construct(PermissionService $permissionService)
+    {
+        $this->permissionService = $permissionService;
+    }
+
     private $excludeRules = [
         'Master' => ['Master'],
         'Admin' => ['Master', 'Admin'],
@@ -23,7 +32,7 @@ class RoleController extends Controller
     {
         //pegar as permissões do usuário logado
         $roles = auth()->user()->roles()->first();
-        $permissions = $roles->load('permissions');
+        $permissions = $roles->load('permissions', 'permissions.roles');
         //pegar todas as roles
         $roles = Role::whereNotIn('name', $this->excludeRules[$roles->name])->get();
 
@@ -83,49 +92,52 @@ class RoleController extends Controller
         //
     }
 
-    public function addPermission(Request $request, Role $role)
+    public function addPermission(PermissionRequest $request, Role $role)
     {
-        $user = auth()->user();
-        $club = $user->club;
-        $clubIds = [];
+        $payload = $request->validated();
+        return $this->permissionService->togglePermission($role, $payload['permission_id']);
 
-        $validatedData = $request->validate([
-            'permission_id' => 'required|integer|exists:permissions,id',
-            'action' => 'required|string|in:attach,detach',
-        ]);
+        // $user = auth()->user();
+        // $club = $user->club;
+        // $clubIds = [];
 
-        //Verificar o tipo de usuário é Master ou Admin e pega os ids dos clubes
-        if($user->hasRole('Master') || $user->hasRole('Admin')){
-            //Verificar se foi selecionado um ou mais clubes que vão receber a permissão
-            $clubIds = !empty($request->clubs_id) ? $request->clubs_id : Club::all()->pluck('id')->toArray();
-        }
+        // $validatedData = $request->validate([
+        //     'permission_id' => 'required|integer|exists:permissions,id',
+        //     'action' => 'required|string|in:attach,detach',
+        // ]);
 
-        //Verificar se o usuário é ClubMaster ou ClubAdmin e pega o id do clube
-        if ($user->hasRole('ClubMaster') || $user->hasRole('ClubAdmin')) {
-            $clubIds = [$club->id];
-        }
+        // //Verificar o tipo de usuário é Master ou Admin e pega os ids dos clubes
+        // if($user->hasRole('Master') || $user->hasRole('Admin')){
+        //     //Verificar se foi selecionado um ou mais clubes que vão receber a permissão
+        //     $clubIds = !empty($request->clubs_id) ? $request->clubs_id : Club::all()->pluck('id')->toArray();
+        // }
 
-        $permission = Permission::find($validatedData['permission_id']);
-        if (!$permission) {
-            return response()->json(['error' => 'Permission not found'], 404);
-        }
+        // //Verificar se o usuário é ClubMaster ou ClubAdmin e pega o id do clube
+        // if ($user->hasRole('ClubMaster') || $user->hasRole('ClubAdmin')) {
+        //     $clubIds = [$club->id];
+        // }
 
-        //Verificar o $request->action para saber se é para adicionar ou remover a permissão (attach/detach)
-        if($validatedData['action'] == 'attach'){
-            foreach ($clubIds as $clubId) {
-                //Verificar se a permissão já existe
-                $hasPermission = $role->permissions()->where('permissions.id', $validatedData['permission_id'])->where('club_id', $clubId)->exists();
-                if (!$hasPermission) {
-                    $role->permissions()->attach($validatedData['permission_id'], ['club_id' => $clubId, 'user_granted_id' => $user->id]);
-                }
-            }
-        }else{
-            foreach ($clubIds as $clubId) {
-                $role->permissions()->detach($validatedData['permission_id'], ['club_id' => $clubId]);
-            }
-        }
+        // $permission = Permission::find($validatedData['permission_id']);
+        // if (!$permission) {
+        //     return response()->json(['error' => 'Permission not found'], 404);
+        // }
 
-        $mesage = $validatedData['action'] == 'attach' ? 'Permissão adicionada com sucesso!' : 'Permissão removida com sucesso!';
-        return response()->json(['success' => $mesage, 'data' => $role->permissions]);
+        // //Verificar o $request->action para saber se é para adicionar ou remover a permissão (attach/detach)
+        // if($validatedData['action'] == 'attach'){
+        //     foreach ($clubIds as $clubId) {
+        //         //Verificar se a permissão já existe
+        //         $hasPermission = $role->permissions()->where('permissions.id', $validatedData['permission_id'])->where('club_id', $clubId)->exists();
+        //         if (!$hasPermission) {
+        //             $role->permissions()->attach($validatedData['permission_id'], ['club_id' => $clubId, 'user_granted_id' => $user->id]);
+        //         }
+        //     }
+        // }else{
+        //     foreach ($clubIds as $clubId) {
+        //         $role->permissions()->detach($validatedData['permission_id'], ['club_id' => $clubId]);
+        //     }
+        // }
+
+        // $mesage = $validatedData['action'] == 'attach' ? 'Permissão adicionada com sucesso!' : 'Permissão removida com sucesso!';
+        // return response()->json(['success' => $mesage, 'data' => $role->permissions]);
     }
 }
