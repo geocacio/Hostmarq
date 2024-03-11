@@ -41,15 +41,13 @@ class CaliberController extends Controller
 
         if ($caliber) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Calibre cadastrado com sucesso!',
+                'success' => 'Calibre cadastrado com sucesso!',
                 'data' => $caliber
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao cadastrar calibre, por favor tente novamente mais tarde!',
+            'success' => 'Erro ao cadastrar calibre, por favor tente novamente mais tarde!',
         ]);
     }
 
@@ -81,15 +79,13 @@ class CaliberController extends Controller
 
         if($caliber->update($validatedData)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Calibre atualizado com sucesso!',
+                'success' => 'Calibre atualizado com sucesso!',
                 'data' => $caliber
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao atualizar calibre, por favor tente novamente mais tarde!',
+            'success' => 'Erro ao atualizar calibre, por favor tente novamente mais tarde!',
         ]);
     }
 
@@ -100,14 +96,12 @@ class CaliberController extends Controller
     {
         if($caliber->delete()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Calibre removido com sucesso!',
+                'success' => 'Calibre removido com sucesso!',
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao remover calibre, por favor tente novamente mais tarde!',
+            'success' => 'Erro ao remover calibre, por favor tente novamente mais tarde!',
         ]);
     }
 }

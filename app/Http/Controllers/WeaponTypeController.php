@@ -37,15 +37,13 @@ class WeaponTypeController extends Controller
         $type = $club->weaponTypes()->create($validatedData);
         if ($type) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Tipo criado com sucesso!',
+                'success' => 'Tipo criado com sucesso!',
                 'type' => $type,
             ], 201);
         }
         
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao criar tipo de arma!',
+            'success' => 'Erro ao criar tipo de arma!',
         ], 500);
     }
 
@@ -76,15 +74,13 @@ class WeaponTypeController extends Controller
 
         if ($weaponType->update($validatedData)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Tipo atualizado com sucesso!',
+                'success' => 'Tipo atualizado com sucesso!',
                 'type' => $weaponType,
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao atualizar tipo de arma!',
+            'success' => 'Erro ao atualizar tipo de arma!',
         ]);
     }
 
@@ -95,14 +91,12 @@ class WeaponTypeController extends Controller
     {
         if ($weaponType->delete()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Tipo removido com sucesso!',
+                'success' => 'Tipo removido com sucesso!',
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao remover tipo de arma!',
+            'success' => 'Erro ao remover tipo de arma!',
         ]);
     }
 }

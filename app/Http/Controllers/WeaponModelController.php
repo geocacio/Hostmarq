@@ -37,15 +37,13 @@ class WeaponModelController extends Controller
         $model = $club->weaponModels()->create($validatedData);
         if ($model) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Modelo criado com sucesso!',
+                'success' => 'Modelo criado com sucesso!',
                 'model' => $model,
             ], 201);
         }
         
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao criar modelo de arma!',
+            'success' => 'Erro ao criar modelo de arma!',
         ], 500);
     }
 
@@ -76,15 +74,13 @@ class WeaponModelController extends Controller
 
         if ($weaponModel->update($validatedData)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Modelo atualizado com sucesso!',
+                'success' => 'Modelo atualizado com sucesso!',
                 'model' => $weaponModel,
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao atualizar modelo de arma!',
+            'success' => 'Erro ao atualizar modelo de arma!',
         ], 500);
     }
 
@@ -95,14 +91,12 @@ class WeaponModelController extends Controller
     {
         if ($weaponModel->delete()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Modelo deletado com sucesso!',
+                'success' => 'Modelo deletado com sucesso!',
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao deletar modelo de arma!',
+            'success' => 'Erro ao deletar modelo de arma!',
         ], 500);
     }
 }
