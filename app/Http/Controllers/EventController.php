@@ -38,15 +38,13 @@ class EventController extends Controller
 
         if ($event) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Evento criado com sucesso!',
+                'success' => 'Evento criado com sucesso!',
                 'event' => $event,
             ], 201);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao criar evento!',
+            'success' => 'Erro ao criar evento!',
         ], 500);
     }
 
@@ -77,15 +75,13 @@ class EventController extends Controller
 
         if ($event->update($validated)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Evento atualizado com sucesso!',
+                'success' => 'Evento atualizado com sucesso!',
                 'event' => $event,
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao atualizar evento!',
+            'success' => 'Erro ao atualizar evento!',
         ], 500);
     }
 
@@ -96,14 +92,12 @@ class EventController extends Controller
     {
         if ($event->delete()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Evento deletado com sucesso!',
+                'success' => 'Evento deletado com sucesso!',
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao deletar evento!',
+            'success' => 'Erro ao deletar evento!',
         ], 500);
     }
 }
