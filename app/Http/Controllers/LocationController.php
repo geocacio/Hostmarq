@@ -11,9 +11,16 @@ class LocationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Club $club)
+    public function index(Request $request, Club $club)
     {
-        $locations = $club->locations;
+        $query = Location::query()->where('club_id', $club->id);
+        $search = $request->search;
+
+        if($request->has('search')) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        $locations = $query->paginate(12);
         return response()->json($locations);
     }
 
@@ -38,9 +45,8 @@ class LocationController extends Controller
 
         if($location){
             return response()->json([
-                'status' => 'success',
-                'message' => 'Local criado com sucesso!',
-                'event' => $location,
+                'success' => 'Local criado com sucesso!',
+                'data' => $location,
             ]);
         }
 
@@ -77,9 +83,8 @@ class LocationController extends Controller
 
         if($location->update($validated)){
             return response()->json([
-                'status' => 'success',
-                'message' => 'Local atualizado com sucesso!',
-                'event' => $location,
+                'success' => 'Local atualizado com sucesso!',
+                'data' => $location,
             ]);
         }
 
@@ -96,8 +101,7 @@ class LocationController extends Controller
     {
         if($location->delete()){
             return response()->json([
-                'status' => 'success',
-                'message' => 'Local deletado com sucesso!',
+                'success' => 'Local deletado com sucesso!',
             ]);
         }
 
