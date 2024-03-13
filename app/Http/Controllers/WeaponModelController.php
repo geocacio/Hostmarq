@@ -11,9 +11,16 @@ class WeaponModelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Club $club)
+    public function index(Request $request, Club $club)
     {
-        $models = $club->weaponModels;
+        $query = WeaponModel::query()->where('club_id', $club->id);
+        $search = $request->search;
+
+        if($request->has('search')){
+            $query->where('name', 'like', '%'.$search.'%');
+        }
+
+        $models = $query->paginate(2);
         return response()->json($models);
     }
 

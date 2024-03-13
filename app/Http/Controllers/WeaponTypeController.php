@@ -11,9 +11,16 @@ class WeaponTypeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Club $club)
+    public function index(Request $request, Club $club)
     {
-        $types = $club->weaponTypes;
+        $query = WeaponType::query()->where('club_id', $club->id);
+        $search = $request->search;
+
+        if($request->has('search')){
+            $query->where('name', 'like', '%'.$search.'%');
+        }
+
+        $types = $query->paginate(12);
         return response()->json($types);
     }
 

@@ -11,9 +11,16 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Club $club)
+    public function index(Request $request, Club $club)
     {
-        $events = $club->events;
+        $query = Event::query()->where('club_id', $club->id);
+        $search = $request->search;
+
+        if($request->has('search')){
+            $query->where('name', 'like', '%'. $search.'%');
+        }
+
+        $events = $query->paginate(12);
         return response()->json($events);
     }
 
