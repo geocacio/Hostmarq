@@ -20,7 +20,7 @@ class WeaponModelController extends Controller
             $query->where('name', 'like', '%'.$search.'%');
         }
 
-        $models = $query->paginate(2);
+        $models = $query->paginate(12);
         return response()->json($models);
     }
 
