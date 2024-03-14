@@ -12,10 +12,29 @@ class HabitualityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Club $club)
+    public function index(Request $request, Club $club)
     {
+        $query = Habituality::query()->where('club_id', $club->id);
+        $search = $request->search;
 
-        $habitualities = $club->habitualities->load('ammunitionHabitualities', 'event', 'location', 'weapon', 'weapon.caliber', 'weapon.model', 'weapon.type');
+        if($request->has('search')){
+            $query->whereHas('weapon', function($query) use ($search)
+                {
+                    $query->where('number_sigma', 'like', '%'.$search.'%')
+                        ->where('origin', 'like', '%'.$search.'%');
+                }
+            );
+        }
+
+        $habitualities = $query->with(
+            'ammunitionHabitualities',
+            'event',
+            'location',
+            'weapon',
+            'weapon.caliber',
+            'weapon.model',
+            'weapon.type')
+            ->paginate(12);
 
         return response()->json($habitualities);
     }
