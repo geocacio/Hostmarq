@@ -54,15 +54,13 @@ class WeaponController extends Controller
 
         if ($weapon) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Arma cadastrada com sucesso!',
+                'success' => 'Arma cadastrada com sucesso!',
                 'weapon' => $weapon,
             ], 201);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao cadastrar arma!',
+            'error' => 'Erro ao cadastrar arma!',
         ], 500);
     }
 
@@ -97,15 +95,13 @@ class WeaponController extends Controller
         
         if ($weapon->update($validatedData)) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Arma atualizada com sucesso!',
+                'success' => 'Arma atualizada com sucesso!',
                 'weapon' => $weapon,
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao atualizar arma!',
+            'error' => 'Erro ao atualizar arma!',
         ], 500);
     }
 
@@ -116,14 +112,12 @@ class WeaponController extends Controller
     {
         if ($weapon->delete()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Arma deletada com sucesso!',
+                'success' => 'Arma deletada com sucesso!',
             ]);
         }
 
         return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao deletar arma!',
+            'error' => 'Erro ao deletar arma!',
         ], 500);
     }
 }

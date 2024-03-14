@@ -68,6 +68,7 @@ Route::middleware('jwt.verify')->group(function () {
     Route::prefix('clubs')->group(function(){
         Route::get('/', [ClubController::class, 'index'])->middleware('permission:read-Club');
         Route::post('/', [ClubController::class, 'store'])->middleware('permission:create-Club');
+        Route::get('/{club}', [ClubController::class, 'show'])->middleware('permission:read-Club');
         Route::put('/{club}', [ClubController::class, 'update'])->middleware('permission:update-Club');
         Route::delete('/{club}', [ClubController::class, 'destroy'])->middleware('permission:delete-Club');
 
