@@ -11,10 +11,20 @@ class WeaponController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
-        $weapons = $user->weapons->load('caliber', 'model', 'type');
+        $query = Weapon::query()->where('user_id', $user->id);
+        $search = $request->search;
+
+        if($request->has('search')){
+            $query->where('number_sigma', 'like', '%'.$search.'%')
+                ->orWhereHas('caliber', function($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                });
+        }
+
+        $weapons = $query->with('caliber', 'model', 'type')->paginate(12);
         return response()->json($weapons);
     }
 

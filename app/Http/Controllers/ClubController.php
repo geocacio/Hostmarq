@@ -81,7 +81,20 @@ class ClubController extends Controller
      */
     public function show(Club $club)
     {
-        //
+        //$club->load('calibers')
+        $club = $club->id->load('calibers', 'weaponTypes', 'weaponModels');
+
+        if($club){
+            return response()->json([
+                'status' => 'success',
+                'data' => $club
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Clube não encontrado'
+        ]);
     }
 
     /**
