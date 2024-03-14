@@ -94,6 +94,7 @@ class WeaponController extends Controller
         ]);
         
         if ($weapon->update($validatedData)) {
+            $weapon->load('caliber', 'model', 'type');
             return response()->json([
                 'success' => 'Arma atualizada com sucesso!',
                 'weapon' => $weapon,
