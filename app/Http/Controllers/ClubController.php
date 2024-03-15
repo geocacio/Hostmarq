@@ -82,7 +82,7 @@ class ClubController extends Controller
     public function show(Club $club)
     {
         //$club->load('calibers')
-        $club = $club->load('calibers', 'weaponTypes', 'weaponModels');
+        $club = $club->load('events', 'locations', 'calibers', 'weaponTypes', 'weaponModels');
 
         if($club){
             return response()->json([

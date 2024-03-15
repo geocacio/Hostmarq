@@ -36,6 +36,7 @@ class HabitualityController extends Controller
             'weapon.type')
             ->paginate(12);
 
+
         return response()->json($habitualities);
     }
 
@@ -50,7 +51,7 @@ class HabitualityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Club $club)
     {
         $validateHabituality = $request->validate([
             'weapon_id' => 'required',
@@ -58,7 +59,7 @@ class HabitualityController extends Controller
             'event_id' => 'required',
             'location_id' => 'required',
         ]);
-        $validateHabituality['club_id'] = auth()->user()->club_id;
+        $validateHabituality['club_id'] = $club->id;
 
         $validateAmmunitionHabituality = $request->validate([
             'quantity' => 'required',
