@@ -51,7 +51,8 @@ class WeaponController extends Controller
         
         $user = \App\Models\User::find(auth()->user()->id);
         $weapon = $user->weapons()->create($validatedData);
-
+        $weapon->load('caliber', 'model', 'type');
+        
         if ($weapon) {
             return response()->json([
                 'success' => 'Arma cadastrada com sucesso!',
